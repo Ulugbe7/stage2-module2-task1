@@ -14,19 +14,17 @@ import java.io.IOException;
 public class AddUserServlet extends HttpServlet {
 
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        req.getRequestDispatcher("/add.jsp").forward(req, resp);
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        resp.sendRedirect("jsp/add.jsp");
     }
+
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String firstName = request.getParameter("firstName");
-        String lastName = request.getParameter("lastName");
-        User user = new User(firstName, lastName);
-
-        Warehouse instance = Warehouse.getInstance();
-        instance.addUser(user);
-
-        request.setAttribute("user", firstName + " " + lastName);
-
-        request.getRequestDispatcher("/add.jsp").forward(request, response);
+        String secondName = request.getParameter("lastName");
+        User user = new User(firstName, secondName);
+        Warehouse warehouse = Warehouse.getInstance();
+        warehouse.addUser(user);
+        request.setAttribute("user", user);
+        request.getRequestDispatcher("jsp/add.jsp").forward(request, response);
     }
 }
